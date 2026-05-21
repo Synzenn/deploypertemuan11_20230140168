@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Premium Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4F46E5;
+            --primary-hover: #4338CA;
+            --bg-color: #F8FAFC;
+            --card-bg: #FFFFFF;
+            --text-main: #0F172A;
+            --text-muted: #64748B;
+            --border-color: #E2E8F0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image:
+                radial-gradient(circle at 85% 50%, rgba(79, 70, 229, 0.08), transparent 40%),
+                radial-gradient(circle at 15% 30%, rgba(236, 72, 153, 0.08), transparent 40%);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            padding: 20px 0;
+        }
+
+        .container {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.08);
+            border: 1px solid var(--border-color);
+            width: 100%;
+            max-width: 440px;
+            text-align: center;
+            animation: fadeIn 0.6s ease-out forwards;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        /* Custom Scrollbar for container */
+        .container::-webkit-scrollbar {
+            width: 6px;
+        }
+        .container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .container::-webkit-scrollbar-thumb {
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(to right, #0F172A, #4F46E5);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 16px;
+            background: #F1F5F9;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            color: var(--text-main);
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.25);
+            background: #FFFFFF;
+        }
+
+        input::placeholder {
+            color: #475569;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--primary), #818cf8);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.3);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(79, 70, 229, 0.4);
+            background: linear-gradient(135deg, var(--primary-hover), #6366f1);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .footer-text {
+            margin-top: 24px;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .footer-text a {
+            color: #818cf8;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .footer-text a:hover {
+            color: #a5b4fc;
+            text-decoration: underline;
+        }
+
+        .alert {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Create Account</h1>
+    <p class="subtitle">Join us to access the premium portal.</p>
+
+    <!-- Using th:object binding from existing code -->
+    <form th:action="@{/register}" method="post" th:object="${request}">
+
+        <div th:if="${#fields.hasErrors('*')}" class="alert">
+            Please correct the errors below.
+        </div>
+
+        <div class="form-group">
+            <label>Username</label>
+            <input type="text" th:field="*{username}" placeholder="e.g. john_doe" required autocomplete="username">
+            <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}" style="color: #fca5a5; font-size: 12px; margin-top: 5px; display: block;"></span>
+        </div>
+
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" th:field="*{password}" placeholder="••••••••" required autocomplete="new-password">
+            <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" style="color: #fca5a5; font-size: 12px; margin-top: 5px; display: block;"></span>
+        </div>
+
+        <div class="form-group">
+            <label>Full Name (Nama)</label>
+            <input type="text" th:field="*{nama}" placeholder="John Doe" required>
+            <span th:if="${#fields.hasErrors('nama')}" th:errors="*{nama}" style="color: #fca5a5; font-size: 12px; margin-top: 5px; display: block;"></span>
+        </div>
+
+        <div class="form-group">
+            <label>Address (Alamat)</label>
+            <input type="text" th:field="*{alamat}" placeholder="123 Premium Street" required>
+            <span th:if="${#fields.hasErrors('alamat')}" th:errors="*{alamat}" style="color: #fca5a5; font-size: 12px; margin-top: 5px; display: block;"></span>
+        </div>
+
+        <button type="submit">Register</button>
+
+    </form>
+
+    <div class="footer-text">
+        <p>Already have an account? <a th:href="@{/login}">Sign in here</a></p>
+    </div>
+</div>
+
+</body>
+</html>
